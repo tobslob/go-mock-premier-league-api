@@ -11,6 +11,7 @@ import (
 	"github.com/go-redis/redis/v8"
 	"go.mongodb.org/mongo-driver/mongo"
 	"tobslob.com/go-mock-premier-league-api/pkg/config"
+	"tobslob.com/go-mock-premier-league-api/pkg/rest"
 )
 
 func main() {
@@ -56,7 +57,7 @@ func main() {
 	}()
 	log.Print("Successfully connected to redis")
 
-	app := config.App{
+	app := &config.App{
 		DB:    db,
 		Env:   &env,
 		Redis: redisClient,
@@ -66,6 +67,9 @@ func main() {
 	router := chi.NewRouter()
 
 	// setup routes
+	if err := rest.Users(startupCtx, router, app); err != nil {
+		fmt.Print(err)
+	}
 
 	// mount API on app router
 	appRouter := chi.NewRouter()

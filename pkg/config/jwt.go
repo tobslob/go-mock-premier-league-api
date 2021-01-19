@@ -17,6 +17,7 @@ type JwtWrapper struct {
 // JwtClaim adds email as a claim to the token
 type JwtClaim struct {
 	Email string
+	isAdmin string
 	jwt.StandardClaims
 }
 
@@ -30,9 +31,10 @@ var (
 )
 
 // Encode generates a jwt token
-func (j *JwtWrapper) Encode(email string) (signedToken string, err error) {
+func (j *JwtWrapper) Encode(email string, admin string) (signedToken string, err error) {
 	claims := &JwtClaim{
 		Email: email,
+		isAdmin: admin,
 		StandardClaims: jwt.StandardClaims{
 			ExpiresAt: time.Now().Add(time.Hour * time.Duration(j.ExpirationHours)).Unix(),
 			Issuer:    j.Issuer,

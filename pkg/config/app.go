@@ -16,7 +16,7 @@ type App struct {
 	Redis *redis.Client
 }
 
-func HealthChecker(app App) http.HandlerFunc {
+func HealthChecker(app *App) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "text/plain")
 
